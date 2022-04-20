@@ -6,10 +6,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.mirea.artemov.notesappv2.Models.Notes;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +25,9 @@ public class NotesTakerActivity extends AppCompatActivity {
     ImageView imageView_save;
     Notes notes;
     boolean isOldNote = false;
+    Switch switch_mapPoint;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,8 @@ public class NotesTakerActivity extends AppCompatActivity {
         imageView_save=findViewById(R.id.imageView_save);
         editText_title=findViewById(R.id.editText_title);
         editText_notes=findViewById(R.id.editText_notes);
+        switch_mapPoint=findViewById(R.id.switch_mapPoint);
+
 
         notes = new Notes();
         try {
@@ -47,6 +57,7 @@ public class NotesTakerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title=editText_title.getText().toString();
                 String description=editText_notes.getText().toString();
+                //Marker marker=
 
                 if(description.isEmpty()){
                     Toast.makeText(NotesTakerActivity.this,"Please add some text to the note", Toast.LENGTH_SHORT).show();
@@ -61,10 +72,17 @@ public class NotesTakerActivity extends AppCompatActivity {
                     notes=new Notes();
                 }
 
+                Intent recieverIntent = getIntent();
+                String position = recieverIntent.getStringExtra("markerPosition");
+
+
                 //устанавливаем аттрибуты
                 notes.setTitle(title);
                 notes.setNotes(description);
                 notes.setDate(formatter.format(date)); // конвертируем объект date в String
+
+                //notes.setPosition(position);
+
 
                 //взаимодействие между различными объектами activity
                 Intent intent = new Intent();
@@ -74,6 +92,16 @@ public class NotesTakerActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+
+        switch_mapPoint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b==true){
+                    Intent intent = new Intent(NotesTakerActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
