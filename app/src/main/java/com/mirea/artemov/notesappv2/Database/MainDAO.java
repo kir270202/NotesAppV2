@@ -22,6 +22,9 @@ public interface MainDAO {
     @Query("UPDATE notes SET title= :title, notes= :notes WHERE ID = :id")
     void update(int id, String title, String notes);
 
+    @Query("UPDATE notes SET title= :title, notes= :notes, position= :position WHERE ID = :id")
+    void update2(int id, String title, String notes, String position);
+
     @Delete
     void delete(Notes notes);
 

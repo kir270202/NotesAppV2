@@ -49,6 +49,8 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
         holder.textView_date.setText(list.get(position).getDate());
         holder.textView_date.setSelected(true);
 
+        holder.textView_position.setText(list.get(position).getPosition());
+
         if (list.get(position).isPinned()) {
             holder.imageView_pin.setImageResource(R.drawable.ic_pin);
         } else {
@@ -68,7 +70,8 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
         holder.notes_container.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return false;
+                listener.onLongClick(list.get(holder.getAdapterPosition()), holder.notes_container);
+                return true;
             }
         });
     }
@@ -100,7 +103,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
 class NotesViewHolder extends RecyclerView.ViewHolder{
 
 CardView notes_container;
-TextView textView_title, textView_notes, textView_date;
+TextView textView_title, textView_notes, textView_date, textView_position;
 ImageView imageView_pin;
 
     public NotesViewHolder(@NonNull View itemView) {
@@ -109,6 +112,7 @@ ImageView imageView_pin;
         textView_title=itemView.findViewById(R.id.textView_title);
         textView_notes=itemView.findViewById(R.id.textView_notes);
         textView_date=itemView.findViewById(R.id.textView_date);
+        textView_position=itemView.findViewById(R.id.textView_position);
         imageView_pin=itemView.findViewById(R.id.imageView_pin);
     }
 }

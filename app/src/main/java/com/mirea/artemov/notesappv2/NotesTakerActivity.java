@@ -1,10 +1,12 @@
 package com.mirea.artemov.notesappv2;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -26,6 +28,8 @@ public class NotesTakerActivity extends AppCompatActivity {
     Notes notes;
     boolean isOldNote = false;
     Switch switch_mapPoint;
+    String position;
+    TextView textView_coordinates;
 
 
 
@@ -38,6 +42,7 @@ public class NotesTakerActivity extends AppCompatActivity {
         editText_title=findViewById(R.id.editText_title);
         editText_notes=findViewById(R.id.editText_notes);
         switch_mapPoint=findViewById(R.id.switch_mapPoint);
+        textView_coordinates=findViewById(R.id.textView_coordinates);
 
 
         notes = new Notes();
@@ -45,6 +50,7 @@ public class NotesTakerActivity extends AppCompatActivity {
             notes= (Notes) getIntent().getSerializableExtra("old_note");
             editText_title.setText(notes.getTitle());
             editText_notes.setText(notes.getNotes());
+            textView_coordinates.setText(notes.getPosition());
             isOldNote=true;
         }
         catch (Exception e){
@@ -72,25 +78,18 @@ public class NotesTakerActivity extends AppCompatActivity {
                     notes=new Notes();
                 }
 
-                Intent recieverIntent = getIntent();
-                String position = recieverIntent.getStringExtra("markerPosition");
-
 
                 //устанавливаем аттрибуты
                 notes.setTitle(title);
                 notes.setNotes(description);
                 notes.setDate(formatter.format(date)); // конвертируем объект date в String
-
-                //notes.setPosition(position);
-
+                notes.setPosition(position);
 
                 //взаимодействие между различными объектами activity
                 Intent intent = new Intent();
                 intent.putExtra("note", notes); // передается только сериализуемый объект
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-
-
 
             }
         });
@@ -99,10 +98,29 @@ public class NotesTakerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b==true){
-                    Intent intent = new Intent(NotesTakerActivity.this, MapsActivity.class);
-                    startActivity(intent);
+                    if(notes.getPosition()==null) {
+                        Intent intent = new Intent(NotesTakerActivity.this, MapsActivity.class);
+                        startActivityForResult(intent, 103);
+                    }
+                    else{
+                        String noteMarker = notes.getPosition();
+                        Intent intent = new Intent(NotesTakerActivity.this, MapsActivity.class);
+                        intent.putExtra("noteMarker", noteMarker);
+                        startActivity(intent);
+                    }
                 }
             }
         });
     }
-}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 103) {
+            if (resultCode == Activity.RESULT_OK) {
+                position = data.getStringExtra("markerPosition");
+
+            }
+        }
+        }
+    }

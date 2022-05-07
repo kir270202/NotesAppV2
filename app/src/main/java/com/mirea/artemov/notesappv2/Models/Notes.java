@@ -24,7 +24,7 @@ public class Notes implements Serializable {
     @ColumnInfo(name = "pinned")
     boolean pinned=false;
 
-   /* @ColumnInfo(name = "position")
+    @ColumnInfo(name = "position")
     String position="";
 
 
@@ -34,7 +34,7 @@ public class Notes implements Serializable {
 
     public void setPosition(String position) {
         this.position = position;
-    }*/
+    }
 
     public int getID() {
         return ID;

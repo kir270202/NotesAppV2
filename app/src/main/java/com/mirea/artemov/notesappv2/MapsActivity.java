@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -85,6 +86,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng moscowLatLng= new LatLng(55.751244, 37.618423);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(moscowLatLng).zoom(12).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        Bundle extras = getIntent().getExtras();
+        String noteMarker = extras.getString("noteMarker");
+        if (extras != null) {
+
+            String[] latlong = noteMarker.split(",");
+            double latitude = Double.parseDouble(latlong[0].substring(10));
+            double longitude = Double.parseDouble(latlong[1].substring(0, latlong[1].length() - 1));
+            LatLng markerPosition = new LatLng(latitude, longitude);
+            mMap.addMarker(new MarkerOptions().position(markerPosition).title("Note destination"));
+        }
+
+
+        /*Intent markerReciverIntent = new Intent();
+        String noteMarker = markerReciverIntent.getStringExtra("noteMarker");
+        if (noteMarker != null) {
+            String[] latlong = noteMarker.split(",");
+            double latitude = Double.parseDouble(latlong[0]);
+            double longitude = Double.parseDouble(latlong[1]);
+            LatLng markerPosition = new LatLng(latitude, longitude);
+            mMap.addMarker(new MarkerOptions().position(markerPosition).title("Note destination"));
+        }*/
+
+
+
+
         //Если понадовится добавить отображение пробок
         //mMap.setTrafficEnabled(true);
 
@@ -103,15 +130,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         marker=mMap.addMarker(new MarkerOptions().title("Your destination").snippet("New place").position(latLng));
         markers.add(marker);
         String position=marker.getPosition().toString();
-        //latLngMarker=marker.getPosition();
-        //titleMarker=marker.getTitle();
-        //snippetMarker=marker.getSnippet();
-        /*notes.setMarker(marker);
-        Intent senderIntent = new Intent(this, NotesTakerActivity.class);
-        senderIntent.putExtra("notesWithMarker", notes);
-        setResult(Activity.RESULT_OK, senderIntent);*/
-        Intent senderIntent = new Intent(this, NotesTakerActivity.class);
+
+        Intent senderIntent = new Intent(/*this, NotesTakerActivity.class*/);
         senderIntent.putExtra("markerPosition", position);
+        setResult(Activity.RESULT_OK, senderIntent);
+        finish();
     }
 
     @Override

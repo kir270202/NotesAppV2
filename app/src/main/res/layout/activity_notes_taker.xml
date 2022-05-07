@@ -45,6 +45,16 @@
         android:textStyle="normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/textView_coordinates"
+        android:hint="Coordinates:"
+        android:textColorHint="@color/grey"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Switch
         android:id="@+id/switch_mapPoint"
@@ -53,8 +63,6 @@
         android:layout_marginTop="16dp"
         android:text="Add a map point"
         android:textSize="16sp" />
-
-
 
 
 </LinearLayout>
