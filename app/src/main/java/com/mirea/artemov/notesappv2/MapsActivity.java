@@ -88,14 +88,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         Bundle extras = getIntent().getExtras();
-        String noteMarker = extras.getString("noteMarker");
         if (extras != null) {
-
-            String[] latlong = noteMarker.split(",");
-            double latitude = Double.parseDouble(latlong[0].substring(10));
-            double longitude = Double.parseDouble(latlong[1].substring(0, latlong[1].length() - 1));
-            LatLng markerPosition = new LatLng(latitude, longitude);
-            mMap.addMarker(new MarkerOptions().position(markerPosition).title("Note destination"));
+            String noteMarker = extras.getString("noteMarker");
+            if(noteMarker.length()>0) {
+                String[] latlong = noteMarker.split(",");
+                double latitude = Double.parseDouble(latlong[0].substring(10));
+                double longitude = Double.parseDouble(latlong[1].substring(0, latlong[1].length() - 1));
+                LatLng markerPosition = new LatLng(latitude, longitude);
+                mMap.addMarker(new MarkerOptions().position(markerPosition).title("Note destination"));
+            }
         }
 
 

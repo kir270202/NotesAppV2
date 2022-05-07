@@ -98,16 +98,20 @@ public class NotesTakerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b==true){
-                    if(notes.getPosition()==null) {
+                    /*if(notes.getPosition()==null) {*/
+                    /*String noteMarker = notes.getPosition();*/
                         Intent intent = new Intent(NotesTakerActivity.this, MapsActivity.class);
+                        String noteMarker = (String) textView_coordinates.getText();
+                        intent.putExtra("noteMarker", noteMarker);
+                    /*intent.putExtra("noteMarker", noteMarker);*/
                         startActivityForResult(intent, 103);
-                    }
-                    else{
-                        String noteMarker = notes.getPosition();
+                   /* }*/
+                   /* else{*/
+                        /*String noteMarker = notes.getPosition();
                         Intent intent = new Intent(NotesTakerActivity.this, MapsActivity.class);
                         intent.putExtra("noteMarker", noteMarker);
-                        startActivity(intent);
-                    }
+                        startActivity(intent);*/
+                    /*}*/
                 }
             }
         });
@@ -119,7 +123,6 @@ public class NotesTakerActivity extends AppCompatActivity {
         if(requestCode == 103) {
             if (resultCode == Activity.RESULT_OK) {
                 position = data.getStringExtra("markerPosition");
-
             }
         }
         }
