@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         else if (requestCode==102){
             if(resultCode==Activity.RESULT_OK){
                 Notes new_notes = (Notes) data.getSerializableExtra("note");
-                database.mainDao().update(new_notes.getID(), new_notes.getTitle(), new_notes.getNotes());
+                database.mainDao().update2(new_notes.getID(), new_notes.getTitle(), new_notes.getNotes(), new_notes.getPosition());
+                //database.mainDao().update(new_notes.getID(), new_notes.getTitle(), new_notes.getNotes());
                 notes.clear();
                 notes.addAll(database.mainDao().getAll());
                 notesListAdapter.notifyDataSetChanged();
